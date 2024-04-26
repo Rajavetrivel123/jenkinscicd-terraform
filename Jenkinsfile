@@ -24,7 +24,7 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
-                  git branch: "main", url: "https://github.com/Rajavetrivel123/jenkinscicd-terraform.git"
+                  git branch: "main", url: "https://github.com/Rajavetrivel123"
                   }
             }
 
