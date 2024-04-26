@@ -37,7 +37,7 @@ pipeline {
                       -input=true \
                       -force-copy \
                       -backend=true \
-                      -backend-config "mani-rajavetrivel" \
+                      -backend-config "bucket=terraform.s3.22-04-24" \
                       -backend-config "key=terraform-${region}/${service}.tfstate" \
                       -backend-config "region=${region}" \
                       -backend-config "dynamodb_table=terraforms" \

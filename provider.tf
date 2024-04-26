@@ -1,7 +1,7 @@
 terraform {
   # Configure the S3 backend
   backend "s3" {
-    bucket = "mani-rajavetrivel"
+    bucket = "terraform.s3.22-04-24"
     key    = "tfstate"
     region = "ap-south-1"
     dynamodb_table = "terraforms"
