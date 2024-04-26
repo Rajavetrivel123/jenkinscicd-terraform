@@ -24,28 +24,27 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
-                  git branch: "devops1", url: "https://github.com/easyawslearn/Terraform-Tutorial.git"
+                  git branch: "main", url: "https://github.com/Rajavetrivel123/jenkinscicd-terraform.git"
                   }
             }
 
         stage('Plan') {
             steps {
                 sh '''
-                  cd Devops-project1 ;
+                  cd jenkinscicd-terraform ;
                   terraform init \
                       -upgrade=true \
                       -get=true \
                       -input=true \
                       -force-copy \
                       -backend=true \
-                      -backend-config "bucket=aws-terraform-devops-backend" \
+                      -backend-config "bucket=terraform.s3.22-04-24" \
                       -backend-config "key=terraform-${region}/${service}.tfstate" \
                       -backend-config "region=${region}" \
-                      -backend-config "dynamodb_table=terraform" \
                       -lock=true
                 '''
                 sh """#!/bin/bash
-                  cd Devops-project1 ; terraform workspace show | grep ${environment} ; if [ "\$?" == 0 ];then echo "workspace already exists ";else terraform workspace new ${environment}; fi;
+                  cd jenkinscicd-terraform ; terraform workspace show | grep ${environment} ; if [ "\$?" == 0 ];then echo "workspace already exists ";else terraform workspace new ${environment}; fi;
 
                 echo "INFO: Terraform -> Working for ${environment}";
                 terraform plan -var region=${region} -out tfplan -lock=true;
@@ -62,7 +61,7 @@ pipeline {
 
           steps {
               script {
-                    def plan = readFile 'Devops-project1/tfplan.txt'
+                    def plan = readFile 'jenkinscicd-terraform/tfplan.txt'
                     input message: "Do you want to apply the plan?",
                     parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
               }
@@ -71,7 +70,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                sh "cd Devops-project1 ; terraform apply -input=false tfplan "
+                sh "cd jenkinscicd-terraform ; terraform apply -input=false tfplan "
             }
         }
       
