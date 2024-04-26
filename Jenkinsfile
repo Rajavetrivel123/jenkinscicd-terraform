@@ -76,7 +76,7 @@ pipeline {
       
     }
     
-    stages {
+
         stage('Terraform Destroy') {
             steps {
                 script {
@@ -85,4 +85,4 @@ pipeline {
             }
         }
     }
-  }
+  
