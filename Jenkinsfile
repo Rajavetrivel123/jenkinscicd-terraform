@@ -28,26 +28,24 @@ pipeline {
                   }
             }
 
-        stages {
-        stage('Terraform Init') {
+        stage('Plan') {
             steps {
-                script {
-                    sh "terraform init -backend-config \"bucket=terraform.s3.22-04-24\" \
+                sh '''
+                  
+                  "terraform init -backend-config \"bucket=terraform.s3.22-04-24\" \
                       -backend-config \"key=terraform-\${params.region}/${params.service}.tfstate\" \
                       -backend-config \"region=\${params.region}\" \
                       -backend-config \"dynamodb_table=terraform\" \
                       -lock=true"
-                }
-            }
-        }
+                '''
+                sh """#!/bin/bash
+                   terraform workspace show | grep ${environment} ; if [ "\$?" == 0 ];then echo "workspace already exists ";else terraform workspace new ${environment}; fi;
 
-        stage('Terraform Validate') {
-            steps {
-                script {
-                    sh 'terraform validate'
-                }
+                echo "INFO: Terraform -> Working for ${environment}";
+                terraform plan -var region=${region} -out tfplan -lock=true;
+                terraform show -no-color tfplan > tfplan.txt;
+                """
             }
-        }
         }
         stage('Approval') {
           when {
