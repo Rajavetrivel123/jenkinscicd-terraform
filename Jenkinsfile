@@ -24,22 +24,28 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
-                  git branch: "main", url: "https://github.com/Rajavetrivel123/jenkinscicd-terraform"
+                  git branch: "main", url: "https://github.com/Rajavetrivel123.git"
                   }
             }
 
         stage('Plan') {
             steps {
                 sh '''
-                  
-                  "terraform init -backend-config \"bucket=terraform.s3.22-04-24\" \
-                      -backend-config \"key=terraform-\${params.region}/${params.service}.tfstate\" \
-                      -backend-config \"region=\${params.region}\" \
-                      -backend-config \"dynamodb_table=terraform\" \
-                      -lock=true"
+                  cd jenkinscicd-terraform ;
+                  terraform init \
+                      -upgrade=true \
+                      -get=true \
+                      -input=true \
+                      -force-copy \
+                      -backend=true \
+                      -backend-config "bucket=terraform.s3.22-04-24" \
+                      -backend-config "key=terraform-${region}/${service}.tfstate" \
+                      -backend-config "region=${region}" \
+                      -backend-config "dynamodb_table=terraform" \
+                      -lock=true
                 '''
                 sh """#!/bin/bash
-                   terraform workspace show | grep ${environment} ; if [ "\$?" == 0 ];then echo "workspace already exists ";else terraform workspace new ${environment}; fi;
+                  cd jenkinscicd-terraform ; terraform workspace show | grep ${environment} ; if [ "\$?" == 0 ];then echo "workspace already exists ";else terraform workspace new ${environment}; fi;
 
                 echo "INFO: Terraform -> Working for ${environment}";
                 terraform plan -var region=${region} -out tfplan -lock=true;
@@ -65,7 +71,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                sh " terraform apply -input=false tfplan "
+                sh "cd jenkinscicd-terraform ; terraform apply -input=false tfplan "
             }
         }
       
