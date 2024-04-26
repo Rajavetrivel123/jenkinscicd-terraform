@@ -31,7 +31,7 @@ pipeline {
         stage('Plan') {
             steps {
                 sh '''
-                  cd jenkinscicd-terraform ;
+                  
                   terraform init \
                       -upgrade=true \
                       -get=true \
@@ -45,7 +45,7 @@ pipeline {
                       -lock=true
                 '''
                 sh """#!/bin/bash
-                  cd jenkinscicd-terraform ; terraform workspace show | grep ${environment} ; if [ "\$?" == 0 ];then echo "workspace already exists ";else terraform workspace new ${environment}; fi;
+                   terraform workspace show | grep ${environment} ; if [ "\$?" == 0 ];then echo "workspace already exists ";else terraform workspace new ${environment}; fi;
 
                 echo "INFO: Terraform -> Working for ${environment}";
                 terraform plan -var region=${region} -out tfplan -lock=true;
@@ -71,7 +71,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                sh "cd jenkinscicd-terraform ; terraform apply -input=false tfplan "
+                sh " terraform apply -input=false tfplan "
             }
         }
       
