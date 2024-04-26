@@ -68,21 +68,15 @@ pipeline {
           }
       }
 
-        stage('Apply') {
+        stage('Destroy') {
             steps {
-                sh " terraform apply -input=false tfplan "
+                sh " terraform destroy -auto-approve "
             }
         }
       
     }
     
 
-        stage('Terraform Destroy') {
-            steps {
-                script {
-                    sh 'terraform destroy -auto-approve'
-                }
-            }
-        }
+
     }
   
