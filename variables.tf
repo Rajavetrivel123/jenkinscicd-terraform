@@ -1,9 +1,9 @@
 variable "region" {
-  type    = "string"
+  type    = string
   default = "ap-south-1"
 }
 variable "ami_id" {
-  type = "map"
+  type = map
   default = {
     ap-south-1    = "ami-007020fd9c84e18c7"
     ap-southeast-1    = "ami-06c4be2792f419b7b"
@@ -11,10 +11,10 @@ variable "ami_id" {
   }
 }
 variable "instance_type" {
-  type    = "string"
+  type    = string
   default = "t2.micro"
 }
 variable "key_name" {
-  type    = "string"
+  type    = string
   default = "dpp"
 }
