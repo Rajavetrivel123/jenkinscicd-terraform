@@ -41,6 +41,7 @@ pipeline {
                       -backend-config "bucket=terraform.s3.22-04-24" \
                       -backend-config "key=terraform-${region}/${service}.tfstate" \
                       -backend-config "region=${region}" \
+                      -backend-config "dynamodb_table=terraform" \
                       -lock=true
                 '''
                 sh """#!/bin/bash
