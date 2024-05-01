@@ -2,14 +2,15 @@
 pipeline {
 
     parameters {
-        string(name: 'environment', defaultValue: 'terraform', description: 'Workspace/environment file to use for deployment', allowedValues: ['dev', 'stage', 'prod'])
+        string(name: 'environment', defaultValue: 'terraform', description: 'Workspace/environment file to use for deployment')
         string(name: 'region', defaultValue: 'ap-south-1', description: 'select region to deployment')
+        string(name: 'env', defaultValue: ['dev', 'stage', 'prod'], description: 'select environment to deployment')
         string(name: 'service', defaultValue: 'apache', description: 'please provide service name')
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
 
     }
 
- 
+
 
      environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
