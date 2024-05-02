@@ -54,24 +54,24 @@ pipeline {
             }
         }
         stage('Approval') {
-          when {
-              not {
-                  equals expected: true, actual: params.autoApprove
-              }
-          }
+    when {
+        not {
+            equals expected: true, actual: params.autoApprove
+        }
+    }
+    steps {
+        script {
+            def plan = readFile '/var/lib/jenkins/workspace/Devops terraform testing/tfplan.txt'
+            input message: "Do you want to apply the plan?",
+                  parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+        }
+    }
+}
 
-          steps {
-              script {
-                    def plan = readFile '/var/lib/jenkins/workspace/Devops terraform testing/tfplan.txt'
-                    input message: "Do you want to apply the plan?",
-                    parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-              }
-          }
-      }
 
         stage('Apply') {
             steps {
-                sh " terraform destroy -auto-approve "
+                sh " terraform apply -input=false tfplan "
             }
         }
       
