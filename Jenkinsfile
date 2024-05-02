@@ -61,7 +61,7 @@ pipeline {
     }
     steps {
         script {
-            def plan = readFile '/var/lib/jenkins/workspace/Devops terraform testing/tfplan.txt'
+            def plan = readFile '/var/lib/jenkins/workspace/terraform-testing/tfplan.txt'
             input message: "Do you want to apply the plan?",
                   parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
         }
