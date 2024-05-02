@@ -71,7 +71,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                sh " terraform destory -auto-approve "
+                sh " terraform destroy -auto-approve "
             }
         }
       
