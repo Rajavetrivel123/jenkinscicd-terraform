@@ -11,7 +11,3 @@ resource "aws_instance" "user_data_example_input_file" {
   key_name = var.key_name
   user_data = "${file("apache_config.sh")}"
 
-  tags = {
-    Name = "Apache-Server1"
-  }
-}
